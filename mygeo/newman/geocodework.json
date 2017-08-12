@@ -1,0 +1,118 @@
+{
+	"variables": [],
+	"info": {
+		"name": "geoCode my work place",
+		"_postman_id": "34b206d7-d85a-2ca6-9fa5-01f9a1986e87",
+		"description": " 269 Parsons Ave, Mountain View, CA 94035",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "geocode for  269 Parsons Ave, Mountain View, CA 94035",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"lat\", jsonData.results[0].geometry.location.lat);",
+							"postman.setEnvironmentVariable(\"lng\", jsonData.results[0].geometry.location.lng);",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "https://maps.googleapis.com/maps/api/geocode/json?address=%C2%A0269%20Parsons%20Ave%2C%20Mountain%20View%2C%20CA%2094035",
+					"protocol": "https",
+					"host": [
+						"maps",
+						"googleapis",
+						"com"
+					],
+					"path": [
+						"maps",
+						"api",
+						"geocode",
+						"json"
+					],
+					"query": [
+						{
+							"key": "address",
+							"value": "%C2%A0269%20Parsons%20Ave%2C%20Mountain%20View%2C%20CA%2094035",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Get lat long, given an address.\nexport lat / long to environment"
+			},
+			"response": []
+		},
+		{
+			"name": "get elevation given lat/long",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"elevation:\"+jsonData.results[0].elevation);",
+							"tests[\"elevation = \" + jsonData.results[0].elevation] = true;          // debug message",
+							"console.log(\"\"/*{$randomInt}}*/);  //log random"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "https://maps.googleapis.com/maps/api/elevation/json?locations={{lat}},{{lng}}&key=AIzaSyAgdgVH-4agXzM-WvEVTqxLrpOhmpddE6g",
+					"protocol": "https",
+					"host": [
+						"maps",
+						"googleapis",
+						"com"
+					],
+					"path": [
+						"maps",
+						"api",
+						"elevation",
+						"json"
+					],
+					"query": [
+						{
+							"key": "locations",
+							"value": "{{lat}},{{lng}}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "key",
+							"value": "AIzaSyAgdgVH-4agXzM-WvEVTqxLrpOhmpddE6g",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

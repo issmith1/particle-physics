@@ -3,9 +3,11 @@
 hide footbox
 
 ' title uam gc1\n
+actor "visualize" as visualize
+
 participant "TBauto\nres" as autores  #e2d4d3
 participant "TBnw\nsched" as nwsched #e2d4d3
-participant "TB" as tb #e2d4d3
+participant "TB" as TB #e2d4d3
 participant "MACS" as macs
 boundary "SIM" as SIM
 
@@ -13,6 +15,9 @@ participant "v4oper\npy3" as v4tool
 participant "NUSS" as nuss2  #dbfff6
 participant "Uber" as uber #dbfff6
 database "udc" as udc #dbfff6
+
+== stream ==
+udc -> visualize
 
 == Planning ==
 
@@ -22,6 +27,16 @@ nuss2 -> udc: announce
 uber -> udc: announce
 
 == Active ==
+SIM -> v4tool: posn
+v4tool -> nuss2: posn
+nuss2 -> udc: posn
+SIM -> SIM: +TBhdr
+SIM -> TB: posn
+TB -> nwsched: posn
+nwsched -> TB: track
+TB -> v4tool: track
+v4tool -> v4tool: -TBhdr
+v4tool -> nuss2: posn2
 
 
 @enduml

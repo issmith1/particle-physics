@@ -1,0 +1,36 @@
+@startuml
+
+hide footbox
+
+' title uam gc1\n
+participant "OPERATOR" as operator
+participant "NUSS" as nuss
+participant "Uber" as uber
+participant "UDC" as udc  #dbfff6
+control "impact" as lun #dbfff6
+
+== Planning ==
+
+nuss -> udc: POST /Position type=UNSOLICITED
+udc -> lun: compute
+activate lun
+lun --> udc: impact
+destroy lun
+
+== Active ==
+
+udc -> uber: POST /UTMMessage POSITION_REPORT_REQUESTED count=2,period_ms=5000
+
+uber --> udc: HttpResponse OK
+uber -> udc: POST /Position type=<gufi>
+udc -> lun: compute
+activate lun
+...5 seconds...
+uber -> udc: POST /Position type=<gufi>
+lun --> udc: impact
+...5 seconds...
+uber -> udc: POST /Position type=<gufi>
+lun --> udc: impact
+deactivate lun
+
+@enduml

@@ -12,7 +12,7 @@ participant "MACS" as macs
 boundary "SIM" as SIM
 
 participant "v4oper\npy3" as v4tool
-participant "NUSS" as nuss2  #dbfff6
+participant "NUSS" as nuss  #dbfff6
 participant "Uber" as uber #dbfff6
 database "udc" as udc #dbfff6
 
@@ -21,22 +21,22 @@ udc -> visualize
 
 == Planning ==
 
-v4tool -> nuss2: POST /Position type=UNSOLICITED
-nuss2 -> uber: announce
-nuss2 -> udc: announce
+v4tool -> nuss: POST /Operation
+nuss -> uber: announce
+nuss -> udc: announce
 uber -> udc: announce
 
 == Active ==
 SIM -> v4tool: posn
-v4tool -> nuss2: posn
-nuss2 -> udc: posn
+v4tool -> nuss: posn
+nuss -> udc: posn
 SIM -> SIM: +TBhdr
 SIM -> TB: posn
 TB -> nwsched: posn
 nwsched -> TB: track
 TB -> v4tool: track
 v4tool -> v4tool: -TBhdr
-v4tool -> nuss2: posn2
+v4tool -> nuss: posn2
 
 
 @enduml

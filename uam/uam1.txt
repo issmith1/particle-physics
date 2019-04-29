@@ -3,34 +3,25 @@
 hide footbox
 
 ' title uam gc1\n
-participant "OPERATOR" as operator
-participant "NUSS" as nuss
-participant "Uber" as uber
-participant "UDC" as udc  #dbfff6
-control "impact" as lun #dbfff6
+participant "TBauto\nres" as autores  #e2d4d3
+participant "TBnw\nsched" as nwsched #e2d4d3
+participant "TB" as tb #e2d4d3
+participant "MACS" as macs
+boundary "SIM" as SIM
+
+participant "v4oper\npy3" as v4tool
+participant "NUSS" as nuss2  #dbfff6
+participant "Uber" as uber #dbfff6
+database "udc" as udc #dbfff6
 
 == Planning ==
 
-nuss -> udc: POST /Position type=UNSOLICITED
-udc -> lun: compute
-activate lun
-lun --> udc: impact
-destroy lun
+v4tool -> nuss2: POST /Position type=UNSOLICITED
+nuss2 -> uber: announce
+nuss2 -> udc: announce
+uber -> udc: announce
 
 == Active ==
 
-udc -> uber: POST /UTMMessage POSITION_REPORT_REQUESTED count=2,period_ms=5000
-
-uber --> udc: HttpResponse OK
-uber -> udc: POST /Position type=<gufi>
-udc -> lun: compute
-activate lun
-...5 seconds...
-uber -> udc: POST /Position type=<gufi>
-lun --> udc: impact
-...5 seconds...
-uber -> udc: POST /Position type=<gufi>
-lun --> udc: impact
-deactivate lun
 
 @enduml
